@@ -3,6 +3,7 @@ const app = express();
 const path = require("path");
 const mysql = require("mysql2");
 const { CLIENT_RENEG_LIMIT } = require("tls");
+const { emitKeypressEvents } = require("readline");
 
 
 let port = 8080;
@@ -26,6 +27,19 @@ app.get("/adduser", (req, res) => {
     res.render("adduser");  
 });
 
+app.get("/deleteuser/:id" , (req,res) =>
+
+{
+    let {id} = req.params;
+    let query =  `DELETE FROM student where ${id}`;
+    connection.query(query , (err,result) =>
+    {
+         if(err) 
+            return res.send("user not deleted");
+         console.log("user deleted");
+         
+    })
+})
 
 
 app.post("/adduser", (req, res) => {
